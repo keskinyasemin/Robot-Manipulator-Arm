@@ -1,0 +1,352 @@
+<?xml version="1.0" ?>
+<robot name="my_robot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <property name="PI" value="3.1415926535897931" />
+
+  <xacro:include filename="$(find mrobot)/urdf/transmissions.urdf.xacro"/>
+  <xacro:include filename="$(find mrobot)/urdf/gazebo.urdf.xacro"/>
+
+
+  <!-- joint base link1 -->
+    <joint name="base_link__link_1_joint" type="revolute">
+      <axis xyz="0 0 1" />
+      <limit effort="1000.0" lower="-3.14" upper="3.14" velocity="0.5" />
+          <origin rpy="0 0 0" xyz="0 0 0.06"/>
+          <parent link="base_link"/>
+          <child link="link1"/>
+      </joint>
+
+      <joint name="link1__link_2_joint" type="revolute">
+        <axis xyz="0 0 1" />
+        <limit effort="1000.0" lower="-1" upper="1" velocity="0.5" />
+            <origin rpy="${PI/2} 0 0" xyz="0 0 0.03"/>
+            <parent link="link1"/>
+            <child link="link2"/>
+        </joint>
+
+      <joint name="link2__link_3_joint" type="revolute">
+        <axis xyz="0 0 1" />
+        <limit effort="1000.0" lower="-1" upper="1" velocity="0.5" />
+            <origin rpy="0 0 0" xyz="0 0.2 0"/>
+            <parent link="link2"/>
+            <child link="link3"/>
+        </joint>
+
+        <joint name="link3__link_4_joint" type="prismatic">
+          <axis xyz="0 0 1" />
+          <limit effort="1000.0" lower="-0.08" upper="0.06" velocity="0.5" />
+              <origin rpy="${-PI/2} 0 0" xyz="0 0.1 0"/>
+              <parent link="link3"/>
+              <child link="link4"/>
+          </joint>
+
+          <joint name="link4__link_5_joint" type="revolute">
+            <axis xyz="0 0 1" />
+            <limit effort="1000.0" lower="-1" upper="1" velocity="0.5" />
+                <origin rpy="${PI/2} 0 0" xyz="0 0 0.17"/>
+                <parent link="link4"/>
+                <child link="link5"/>
+            </joint>
+
+            <joint name="link5__link_6_joint" type="revolute">
+              <axis xyz="0 0 1" />
+              <limit effort="1000.0" lower="-3.14" upper="3.14" velocity="0.5" />
+                  <origin rpy="${-PI/2} 0 0" xyz="0 0.1 0"/>
+                  <parent link="link5"/>
+                  <child link="link6"/>
+              </joint>
+
+              <joint name="link6__link_7_joint" type="prismatic">
+                <axis xyz="0 0 1" />
+                <limit effort="1000.0" lower="-0.0125" upper="0" velocity="0.5" />
+                    <origin rpy="${PI/2} 0 0" xyz="0 -0.01 0.035"/>
+                    <parent link="link6"/>
+                    <child link="link7"/>
+                </joint>
+
+                <joint name="link6__link_8_joint" type="prismatic">
+                  <axis xyz="0 0 1" />
+                  <limit effort="1000.0" lower="0" upper="0.0125" velocity="0.5" />
+                      <origin rpy="${PI/2} 0 0" xyz="0 0.01 0.035"/>
+                      <parent link="link6"/>
+                      <child link="link8"/>
+                  </joint>
+
+                  <joint name="base_frame_joint" type="fixed">
+                    <parent link="base_link"/>
+                    <child link="base_frame" />
+                    <origin xyz="0 0 0" rpy="0 0 0"/>
+                  </joint>
+
+<!-- base link -->
+<link name="base_frame">
+  <!-- This is the reference coordinate system of the arm (the KNI kinematics are specified
+       in this frame); there is no actual arm part attached to this link -->
+</link>
+  <link name="base_link">
+    <visual>
+	<origin rpy="0 0 0" xyz="0 0 0"/>
+	<geometry>
+		<box size="0.125 0.125 0.0275"/>
+	</geometry>
+  <material name="grey">
+    <color rgba="0.8 0.8 0.8 1"/>
+  </material>
+    </visual>
+    <collision name="collision_base">
+      <origin xyz="0 0 0.0175" rpy="0 0 0"/>
+	<geometry>
+		<box size="0.125 0.125 0.0275"/>
+	</geometry>
+    </collision>
+    <inertial>
+    	<origin xyz="0 0 0.0175" rpy="0 0 0"/>
+    	<mass value="50"/>
+    	<inertia
+    	        ixx="1.0" ixy="0.0" ixz="0.0"
+        	iyy="1.0" iyz="0.0"
+        	izz="1.0"/>
+    </inertial>
+  </link>
+
+	<link name="link1">
+        <visual>
+            <origin xyz="0 0 -0.175" rpy="0 0 0"/>
+            <geometry>
+                <!--<cylinder radius="0.35" length="0.3"/>-->
+                <mesh filename="package://mrobot/meshes/katana_motor1_pan_link.stl"/>
+            </geometry>
+            <material name="grey">
+              <color rgba="0.8 0.8 0.8 1"/>
+            </material>
+        </visual>
+	<collision name="collision_link1">
+    <origin xyz="0 0 -0.175" rpy="0 0 0"/>
+	  <geometry>
+		    <!--<cylinder radius="0.35" length="0.3"/>-->
+        <mesh filename="package://mrobot/meshes/katana_motor1_pan_link.stl"/>
+	  </geometry>
+	</collision>
+	<inertial>
+      	  <origin xyz="0 0 -0.175" rpy="0 0 0"/>
+      	  <mass value="0.1"/>
+      	  <inertia
+        	ixx="1.0" ixy="0.0" ixz="0.0"
+        	iyy="1.0" iyz="0.0"
+        	izz="1.0"/>
+    	</inertial>
+
+    </link>
+
+    <link name="link2">
+        <visual>
+            <origin xyz="0 0 0" rpy="${-PI/2} 0 ${PI/2}"/>
+            <geometry>
+                <!--<cylinder radius="0.2" length="0.3"/>-->
+                <mesh filename="package://mrobot/meshes/katana_motor2_lift_link.stl"/>
+            </geometry>
+            <material name="grey">
+              <color rgba="0.8 0.8 0.8 1"/>
+            </material>
+        </visual>
+    <collision name="collision_link4">
+      <origin xyz="0 0 0" rpy="${-PI/2} 0 ${PI/2}"/>
+    <geometry>
+      <!--<cylinder radius="0.2" length="0.3"/>-->
+      <mesh filename="package://mrobot/meshes/katana_motor2_lift_link.stl"/>
+    </geometry>
+    </collision>
+    <inertial>
+          <origin xyz="0 0 0" rpy="${-PI/2} 0 ${PI/2}"/>
+          <mass value="0.1"/>
+          <inertia
+          ixx="1.0" ixy="0.0" ixz="0.0"
+          iyy="1.0" iyz="0.0"
+          izz="1.0"/>
+      </inertial>
+    </link>
+
+	<link name="link3">
+        <visual>
+            <origin xyz="0 0.09 0" rpy="${-PI/2} 0 ${PI/2}"/>
+            <geometry>
+                <box size="0.18 0.08 0.03"/>
+            </geometry>
+            <material name="grey">
+              <color rgba="0.8 0.8 0.8 1"/>
+            </material>
+        </visual>
+	<collision name="collision_link3">
+    <origin xyz="0 0.09 0" rpy="${-PI/2} 0 ${PI/2}"/>
+	  <geometry>
+        <box size="0.18 0.08 0.03"/>
+
+	  </geometry>
+	</collision>
+	<inertial>
+      	  <origin xyz="0 0.09 0" rpy="${-PI/2} 0 ${PI/2}"/>
+      	  <mass value="0.1"/>
+      	  <inertia
+        	ixx="1.0" ixy="0.0" ixz="0.0"
+        	iyy="1.0" iyz="0.0"
+        	izz="1.0"/>
+    	</inertial>
+    </link>
+
+    <link name="link4">
+        <visual>
+            <origin rpy="${-PI/2} 0 ${PI/2}" xyz="0 0 0.09"/>
+            <geometry>
+                <box size="0.06 0.18 0.02"/>
+            </geometry>
+            <material name="grey">
+              <color rgba="0.8 0.8 0.8 1"/>
+            </material>
+        </visual>
+	<collision name="collision_link2">
+    <origin rpy="${-PI/2} 0 ${PI/2}" xyz="0 0 0.09"/>
+	  <geometry>
+		    <box size="0.06 0.18 0.02"/>
+	  </geometry>
+	</collision>
+	<inertial>
+      	  <origin rpy="${-PI/2} 0 ${PI/2}" xyz="0 0 0.09"/>
+      	  <mass value="0.1"/>
+      	  <inertia
+        	ixx="1.0" ixy="0.0" ixz="0.0"
+        	iyy="1.0" iyz="0.0"
+        	izz="1.0"/>
+    	</inertial>
+    </link>
+
+
+    <link name="link5">
+          <visual>
+              <origin xyz="0 0.05 0" rpy="${-PI/2} 0 ${PI/2}"/>
+              <geometry>
+                  <box size="0.1 0.05 0.02"/>
+              </geometry>
+              <material name="grey">
+                <color rgba="0.8 0.8 0.8 1"/>
+              </material>
+          </visual>
+  	<collision name="collision_link5">
+      <origin xyz="0 0.05 0" rpy="${-PI/2} 0 ${PI/2}"/>
+  	  <geometry>
+          <box size="0.1 0.05 0.02"/>
+
+  	  </geometry>
+  	</collision>
+  	<inertial>
+        	  <origin xyz="0 0.05 0" rpy="${-PI/2} 0 ${PI/2}"/>
+        	  <mass value="0.1"/>
+        	  <inertia
+          	ixx="1.0" ixy="0.0" ixz="0.0"
+          	iyy="1.0" iyz="0.0"
+          	izz="1.0"/>
+      	</inertial>
+      </link>
+
+      <link name="link6">
+            <visual>
+                <origin rpy="0 0 0" xyz="0 0 0"/>
+                <geometry>
+                    <cylinder radius="0.009" length="0.03"/>
+                </geometry>
+                <material name="grey">
+                  <color rgba="0.8 0.8 0.8 1"/>
+                </material>
+            </visual>
+    	<collision name="collision_link6">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+    	  <geometry>
+    		    <cylinder radius="0.009" length="0.03"/>
+    	  </geometry>
+    	</collision>
+    	<inertial>
+          	  <origin xyz="0 0 0" rpy="0 0 0"/>
+          	  <mass value="0.1"/>
+          	  <inertia
+            	ixx="1.0" ixy="0.0" ixz="0.0"
+            	iyy="1.0" iyz="0.0"
+            	izz="1.0"/>
+        	</inertial>
+
+        </link>
+
+        <link name="link7">
+              <visual>
+                  <origin xyz="0 0 0" rpy="0 0 0"/>
+                  <geometry>
+                      <box size="0.01 0.05 0.005"/>
+                  </geometry>
+                  <material name="grey">
+                    <color rgba="0.8 0.8 0.8 1"/>
+                  </material>
+              </visual>
+        <collision name="collision_link7">
+          <origin xyz="0 0 0" rpy="0 0 0"/>
+          <geometry>
+              <box size="0.01 0.05 0.005"/>
+          </geometry>
+        </collision>
+        <inertial>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <mass value="0.1"/>
+                <inertia
+                ixx="1.0" ixy="0.0" ixz="0.0"
+                iyy="1.0" iyz="0.0"
+                izz="1.0"/>
+            </inertial>
+
+          </link>
+
+          <link name="link8">
+                <visual>
+                    <origin rpy="0 0 0" xyz="0 0 0"/>
+                    <geometry>
+                        <box size="0.01 0.05 0.005"/>
+                    </geometry>
+                    <material name="grey">
+                      <color rgba="0.8 0.8 0.8 1"/>
+                    </material>
+                </visual>
+          <collision name="collision_link8">
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.01 0.05 0.005"/>
+            </geometry>
+          </collision>
+          <inertial>
+                  <origin xyz="0 0 0" rpy="0 0 0"/>
+                  <mass value="0.1"/>
+                  <inertia
+                  ixx="1.0" ixy="0.0" ixz="0.0"
+                  iyy="1.0" iyz="0.0"
+                  izz="1.0"/>
+              </inertial>
+
+            </link>
+
+
+</robot>
+
+
+<!--                GAZEBO RELATED PART                             -->
+
+  <!-- ROS Control plugin for Gazebo
+  <gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+      <robotNamespace>/simple_model</robotNamespace>
+    </plugin>
+  </gazebo>-->
+
+  <!-- transmission
+  <transmission name="base_to_second_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <actuator name="motor1">
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+    <joint name="base_to_second_joint">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </joint>
+  </transmission>-->

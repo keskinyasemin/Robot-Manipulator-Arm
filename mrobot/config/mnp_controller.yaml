@@ -1,0 +1,40 @@
+my_robot:
+  type: "effort_controllers/JointTrajectoryController"
+  joints:
+    - base_link__link_1_joint
+    - link1__link_2_joint
+    - link2__link_3_joint
+    - link3__link_4_joint
+    - link4__link_5_joint
+    - link5__link_6_joint
+    - link6__link_7_joint
+    - link6__link_8_joint
+  gains:
+    base_link__link_1_joint: {p: 6.0, d: 4.0, i: 0.0, i_clamp: 0.0}
+    link1__link_2_joint: {p: 4.0, d: 3.0, i: 0.0, i_clamp: 0.0}
+    link2__link_3_joint: {p: 2.0, d: 1.5, i: 0.0, i_clamp: 0.0}
+    link3__link_4_joint: {p: 1.0, d: 1.0, i: 0.0, i_clamp: 0.0}
+    link4__link_5_joint: {p: 0.1, d: 0.05, i: 0.0, i_clamp: 0.0}
+    link5__link_6_joint: {p: 0.1, d: 0.05, i: 0.0, i_clamp: 0.0}
+    link6__link_7_joint: {p: 0.1, d: 0.05, i: 0.0, i_clamp: 0.0}
+    link6__link_8_joint: {p: 0.1, d: 0.05, i: 0.0, i_clamp: 0.0}
+  constraints:
+    goal_time: 0.6                    # Defaults to 0.0 (is enforced!)
+    stopped_velocity_tolerance: 0.02  # Defaults to 0.01
+    base_link__link_1_joint:
+      #trajectory: 0.05                # Defaults to zero (i.e., tolerance is not enforced)
+      goal: 0.05                      # Defaults to zero (i.e., tolerance is not enforced)
+  link1__link_2_joint:
+    goal: 0.05
+  link2__link_3_joint:
+    goal: 0.05
+  link3__link_4_joint:
+    goal: 0.05
+  link4__link_5_joint:
+    goal: 0.05
+  link5__link_6_joint:
+    goal: 0.05
+  link6__link_7_joint:
+    goal: 0.05
+  link6__link_8_joint:
+    goal: 0.05

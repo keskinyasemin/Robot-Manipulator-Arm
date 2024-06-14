@@ -1,0 +1,9 @@
+my_robot_joints:
+  - base_link__link_1_joint
+  - link1__link_2_joint
+  - link2__link_3_joint
+  - link3__link_4_joint
+  - link4__link_5_joint
+  - link5__link_6_joint
+  - link6__link_7_joint
+  - link6__link_8_joint

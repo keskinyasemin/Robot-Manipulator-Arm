@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<launch>
+
+  <!-- load urdf -->
+  <param name="robot_description" command="$(find xacro)/xacro.py '$(find mrobot)/urdf/my_robot.urdf.xacro'" />
+
+  <!-- load world -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch"/>
+
+  <!-- spawn robot in gazebo -->
+  <node name="spawn_katana_model" pkg="gazebo_ros" type="spawn_model" args="$(optenv ROBOT_INITIAL_POSE) -z 1 -urdf -param robot_description -model my_robot" respawn="false" output="screen" />
+
+  <!-- robot state publisher -->
+  <node pkg="robot_state_publisher" type="state_publisher" name="robot_state_publisher" />
+
+</launch>
